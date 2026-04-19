@@ -1,4 +1,4 @@
-# Competing Firm Pricing Simulation
+# Competing Firms Pricing Simulation
 
 A multi-agent market simulation where firms compete using different pricing strategies in a dynamic environment with stochastic demand and market shocks.
 
