@@ -13,7 +13,7 @@ The project explores how simple decision rules affect profitability over time in
 
 
 ## Live Demo
-https://competing-firm-pricing-simulation.streamlit.app/
+https://competing-firms-pricing-simulation.streamlit.app/
 
 ---
 
