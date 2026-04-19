@@ -32,7 +32,7 @@ if st.sidebar.button("Run Simulation"):
 
     st.success("Simulation updated!")
 
-fig, ax = plt.subplots(figsize=(6, 4))
+fig, ax = plt.subplots(figsize=(6, 3))
 
 for name, data in sim.history.items():
     ax.plot(data["profits"], label=name)
