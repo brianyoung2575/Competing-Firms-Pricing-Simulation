@@ -1,56 +1,44 @@
 import random
-import math
 from .base import BaseStrategy
 
-class AdaptiveExplatoryStrategyV2(BaseStrategy):
+class RegimeExploratoryStrategy(BaseStrategy):
     def __init__(self):
-        self.bins = [i for i in range(1, 101)]
-        self.q_values = {b: 0.0 for b in self.bins}
-        self.counts = {b: 0 for b in self.bins}
+        self.price = 10
+        self.direction = None
+        self.lock_steps = 0
+        self.min_hold = 5
 
-        self.last_price = 10
-        self.temperature = 2.0
-
-        self.best_price = 10
-        self.best_value = float("-inf")
-
-        self.alpha = 0.1
-
-    def _closest_bin(self, price):
-        return min(self.bins, key=lambda x: abs(x - price))
+        self.last_profit = 0
+        self.prev_profit = 0
 
     def choose_price(self, state):
-        last_profit = state.get("last_profit", 0)
+        self.prev_profit = self.last_profit
+        self.last_profit = state.get("last_profit", 0)
 
-        b = self._closest_bin(self.last_price)
-        self.counts[b] += 1
+        if self.lock_steps > 0:
+            self.lock_steps -= 1
 
-        self.q_values[b] += self.alpha * (last_profit - self.q_values[b])
+            if self.last_profit < self.prev_profit * 0.8:
+                self.lock_steps = 0
 
-        if last_profit > self.best_value:
-            self.best_value = last_profit
-            self.best_price = self.last_price
+            return self.price
 
-        self.temperature = max(0.1, self.temperature * 0.995)
+        if self.direction is None:
+            self.direction = random.choice([-1, 1])
+            shock = random.uniform(5, 20)
 
-        if random.random() < 0.1:
-            price = random.uniform(1, 100)
+            self.price = max(0.1, self.price + self.direction * shock)
+
+            return self.price
+
+        new_price = self.price * (1 + 0.8 * self.direction * 0.1)
+
+        if self.last_profit > self.prev_profit:
+            self.price = new_price
         else:
-            max_q = max(self.q_values.values())
-            weights = [
-                math.exp((self.q_values[b] - max_q) / self.temperature)
-                for b in self.bins
-            ]
+            self.direction *= -1
+            self.price = self.price * (1 + 0.8 * self.direction * 0.1)
 
-            total = sum(weights)
-            probs = [w / total for w in weights]
+        self.lock_steps = self.min_hold
 
-            chosen_bin = random.choices(self.bins, weights=probs, k=1)[0]
-
-            price = chosen_bin + random.uniform(-2, 2)
-
-        if random.random() < 0.2:
-            price = self.best_price + random.uniform(-1, 1)
-
-        self.last_price = max(0.1, min(100, price))
-        return self.last_price
+        return self.price
