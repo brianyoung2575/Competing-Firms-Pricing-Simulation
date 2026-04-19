@@ -1,7 +1,7 @@
 import random
 from .base import BaseStrategy
 
-class RandomHillClimberStrategy(BaseStrategy):
+class ExploratoryStrategy(BaseStrategy):
     def __init__(self, sigma=5, warmup=10, restart_every=20):
         self.prices = list(range(1, 101))
         self.scores = {p: 0.0 for p in self.prices}
