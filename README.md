@@ -1,18 +1,23 @@
-# Dynamic-Pricing-Simulation
-> Simulating firm revenue under economic uncertainty.
+# Competing Firm Pricing Simulation
 
-## Project Overview
-This project is a simulation of how different pricing strategies perform in a market subject to random demand shocks, such as tariffs or supply chain disruptions.
+A multi-agent market simulation where firms compete using different pricing strategies in a dynamic environment with stochastic demand and market shocks.
 
-## Key Features
-* **Demand Shocks:** Randomly occurring events that shift the demand curve.
-* **Competing Strategies:** 
-   * **___:** ___
-   * **___:** ___
-   
-* **Interactive Dashboard:** real-time visualisation.
+The project explores how simple decision rules affect profitability over time in a competitive market setting.
 
-## Setup
-1. Clone the repository.
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run the app: `streamlit run app.py`
+---
+
+## Strategies
+- **Simple**: Fixed pricing baseline  
+- **Greedy**: Adjusts price based on past profit  
+- **Exploratory**: Randomised pricing for exploration  
+
+
+## Live Demo
+https://competing-firm-pricing-simulation.streamlit.app/
+
+---
+
+## Run Locally
+```bash
+pip install -r requirements.txt
+streamlit run app.py
